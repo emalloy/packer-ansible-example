@@ -1,0 +1,81 @@
+{
+
+  "variables": {
+    "debug_mode": "1",
+
+    "gce_account_file": "../../credentials/packer_credentials_cicd.json",
+    "gce_project_id": "img-cicd-dev",
+    "gce_zone": "us-west1-b",
+    "gce_network": "dev-vpc",
+    "gce_subnetwork": "qe-us-west1-private",
+    "gce_flavor": "n1-standard-1",
+    "gce_source_image_family": "centos-7",
+    "gce_ssh_username": "deployer",
+    "gce_ssh_private_key_file": "../../credentials/deployer_ssh_key",
+    "gce_network_project_id": "img-network-dev",
+    "gce_network_tags": "qe",
+    "gce_image_project_id": "img-gcp-repo",
+    "gce_ssh_timeout": "7m",
+
+    "node_type": "be"
+  },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "name": "gcebuild",
+      "project_id": "{{user `gce_project_id`}}",
+      "zone": "{{user `gce_zone`}}",
+      "network": "{{user `gce_network`}}",
+      "subnetwork": "{{user `gce_subnetwork`}}",
+      "omit_external_ip": "false",
+      "use_internal_ip": "true",
+      "machine_type": "{{user `gce_flavor`}}",
+      "account_file": "{{user `gce_account_file`}}",
+      "source_image_family": "{{user `gce_source_image_family`}}",
+      "ssh_username": "{{user `gce_ssh_username`}}",
+      "ssh_private_key_file": "{{user `gce_ssh_private_key_file`}}",
+      "ssh_pty": "true",
+      "image_name": "be-{{user `node_type`}}-image-{{user `release_branch`}}-{{timestamp}}",
+      "image_family": "be-{{user `node_type`}}",
+      "image_labels": {
+	 "application": "{{user `node_type`}}",
+	 "release": "2017q3-{{timestamp}}",
+	 "release_branch": "{{user `release_branch`}}",
+	 "parent_image": "{{user `gce_source_image`}}"
+      },
+      "image_description": "Image for BE {{user `node_type`}}",
+      "network_project_id": "{{user `gce_network_project_id`}}",
+      "tags": "{{user `gce_network_tags`}}",
+      "source_image_project_id": "{{user `gce_image_project_id`}}",
+      "ssh_timeout": "{{user `gce_ssh_timeout`}}"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": ["bash/gcp_centos.sh"]
+    },
+    {
+      "type": "shell",
+      "scripts": ["bash/clone_repo.sh"]
+    },
+    {
+      "type": "ansible-local",
+
+      "command": "sudo ansible-playbook",
+      "playbook_file": "site.yml",
+      "playbook_dir": "../",
+      "extra_arguments": [
+        "-vv"
+      ],
+      "staging_directory": "/home/packer/gcp",
+      "galaxy_file": "ansible-requirements.yml",
+      "inventory_file": "inventory/packer.inventory"
+    },
+    {
+      "type": "shell",
+      "inline": ["sync"]
+    }
+  ]
+}

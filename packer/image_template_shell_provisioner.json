@@ -1,0 +1,61 @@
+{
+
+  "variables": {
+    "debug_mode": "1",
+
+    "gce_project_id": "",
+    "gce_zone": "",
+    "gce_network": "",
+    "gce_network_project_id": "",
+    "gce_subnetwork": "",
+    "gce_flavor": "",
+    "gce_source_image_family": "",
+    "gce_ssh_username": "",
+    "gce_ssh_timeout": "",
+
+    "node_type": "be"
+  },
+  "builders": [
+    {
+      "type": "googlecompute",
+      "name": "gcebuild",
+      "project_id": "{{user `gce_project_id`}}",
+      "zone": "{{user `gce_zone`}}",
+      "network_project_id": "{{ user `gce_network_project_id` }}",
+      "network": "{{user `gce_network`}}",
+      "subnetwork": "{{user `gce_subnetwork`}}",
+      "omit_external_ip": "false",
+      "use_internal_ip": "false",
+      "machine_type": "{{user `gce_flavor`}}",
+      "source_image_family": "centos-7",
+      "ssh_pty": "true",
+      "ssh_username": "{{ user `gce_ssh_username` }}",
+      "image_name": "be-{{user `node_type`}}-image-{{user `release_branch`}}-{{timestamp}}",
+      "image_family": "be-{{user `node_type`}}",
+      "image_labels": {
+	 "application": "{{user `node_type`}}",
+	 "release": "2017q3-{{timestamp}}",
+	 "release_branch": "{{user `release_branch`}}",
+	 "parent_image": "{{user `gce_source_image`}}"
+      },
+      "image_description": "Image for BE {{user `node_type`}}",
+      "tags": "{{user `gce_network_tags`}}",
+      "ssh_timeout": "{{user `gce_ssh_timeout`}}"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": ["bash/gcp_centos.sh"]
+    },
+    {
+      "type": "shell",
+      "scripts": ["bash/gcp_centos_operations_agents.sh"]
+    },
+    {
+      "type": "shell",
+      "inline": ["sync"]
+    }
+  ]
+}

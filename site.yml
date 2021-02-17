@@ -1,0 +1,10 @@
+---
+  - hosts: all
+    connection: local
+
+    roles:
+      - role: java
+        java_version: '8.0.262+10'
+        #      - role: stackdriver
+        #        stackdriver_api_key: "EXAMPLE"
+        #        stackdriver_rabbitmq_enabled: yes
