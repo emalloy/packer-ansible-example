@@ -1,32 +1,14 @@
 {
-  "debug_mode": "1",
-
-  "gce_project_id": "gke-spinnaker-dev-057a",
+  "debug_mode": "31",
+  "gce_account_file": "/Users/emalloy/.gcp/seed-a2323-net-org-sa.json",
+  "gce_project_id": "emalloy-stg-service-prj-52",
+  "gce_subnetwork": "general-primary",
+  "gce_network_project_id": "emalloy-dvpc-host-5a",
   "gce_zone": "us-west1-a",
-  "gce_network": "xpn-network",
-  "gce_network_project_id": "xpn-vpc-host-project-3912",
-  "gce_subnetwork": "xpn-network-subnet-01-primary",
   "gce_flavor": "n1-standard-1",
   "gce_source_image_family": "centos-7",
-  "gce_ssh_username": "packer",
-  "gce_ssh_timeout": "7m",
   "gce_network_tags": "ssh",
-
-  "node_type": "base-operations"
-
+  "gce_image_project_id": "gke-spinnaker-dev-057a",
+  "gce_ssh_timeout": "7m",
+  "node_type": "foundation"
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-},
