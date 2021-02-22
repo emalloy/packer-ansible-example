@@ -15,3 +15,5 @@
         agent_type: logging
         package_state: present
         version: latest
+      - role: actifio-agent
+        become: yes
