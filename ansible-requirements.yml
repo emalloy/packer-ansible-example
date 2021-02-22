@@ -8,3 +8,7 @@
 - src: https://github.com/gantsign/ansible-role-java
   name: java
   version: 9.0.2
+
+- src: https://github.com/Actifio/ansible_connector_install
+  name: actifio-conf
+  version: master
