@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -o errexit
 set -o nounset
 set -x
 
@@ -21,7 +20,8 @@ ${YUM} install \
   cloud-init \
   git
 
-sudo easy_install pip
+curl https://bootstrap.pypa.io/2.7/get-pip.py --output /tmp/get-pip.py \
+&& sudo python2 /tmp/get-pip.py
 sudo pip install netaddr ansible==2.4.3.0
 sudo mkdir -p /etc/ansible
 echo "what we have as $USER user - $(ls -lah)"
