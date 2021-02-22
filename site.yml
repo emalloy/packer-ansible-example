@@ -10,6 +10,7 @@
         agent_type: monitoring
         package_state: present
         version: latest
+        ignore_errors: yes
       - role: stackdriver
         become: yes
         agent_type: logging
