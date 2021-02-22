@@ -6,8 +6,15 @@
       - role: java
         java_version: '8.0.262+10'
       - role: stackdriver
+        become: yes
         agent_type: monitoring
         package_state: present
         version: latest
-        config_file_local: collectd.conf
-        additional_config_dir: plugins/
+        ignore_errors: yes
+      - role: stackdriver
+        become: yes
+        agent_type: logging
+        package_state: present
+        version: latest
+      - role: actifio-agent
+        become: yes
