@@ -10,7 +10,7 @@
     "gce_subnetwork": "",
     "gce_flavor": "",
     "gce_source_image_family": "",
-    "gce_ssh_username": "",
+    "gce_ssh_username": "packer",
     "gce_ssh_timeout": "",
 
     "node_type": "be"
