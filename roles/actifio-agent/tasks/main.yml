@@ -1,0 +1,12 @@
+---
+- name: download actifio agent from gcs
+  get_url:
+    url: https://storage.googleapis.com/public-gcp-binary-agents/linux/el/connector-Linux
+  -latestversion.rpm
+    dest: /tmp/
+    checksum: sha256:21548f667b468f8301e5eb66e6385a1f00eee331f31229f3c518ca3ede9fd916
+
+- name: install actifio rpm
+  yum:
+    name: /tmp/connector-Linux-latestversion.rpm
+    state: present
